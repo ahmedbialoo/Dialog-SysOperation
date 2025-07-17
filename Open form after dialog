@@ -1,0 +1,25 @@
+[DataSource]
+class Task_Header
+{
+public void create(boolean _append = false)
+ {
+     //element.numberSeqFormHandler().formMethodDataSourceCreatePre();
+     //super(_append);
+     //element.numberSeqFormHandler().formMethodDataSourceCreate();
+     
+     Task_Header Task_HeaderLast;
+
+     select firstonly Task_HeaderLast order by Task_HeaderLast.RecId desc;
+     Task_CreateHeaderController::main(element.args());
+     Task_Header_ds.executeQuery(); // Ensure data is fetched
+
+     if (Task_Header_ds.last())
+     {
+         Task_Header_ds.reread();
+         Task_Header_ds.refresh();
+     }
+     if(Task_HeaderLast.HeaderID != element.Task_Header.HeaderId)
+     element.viewOptionHelper().setViewOption(FormViewOption::Details);
+
+ }
+}
