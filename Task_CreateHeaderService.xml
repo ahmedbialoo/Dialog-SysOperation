@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>Task_CreateHeaderService</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+public class Task_CreateHeaderService
+{
+    
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>createHeader</Name>
+				<Source><![CDATA[
+    public Task_HeaderID createHeader(Task_CreateHeaderContract _contract)
+    {
+        Task_HeaderID   headerID;
+        Task_ID         taskID = _contract.parmTaskID();
+        TransDate       DateRequested = _contract.parmDateRequested();
+        Task_Status     Status =  _contract.parmStatus();
+        CustAccount     CustAccount =  _contract.parmCustAccount();
+
+        Task_Header task_Header;
+        Task_Table task_Table;
+
+        //if (!Task_Table::exist(taskID))
+        //{
+        //    throw error(strFmt("Task %1 does not exist.", taskID));
+        //}
+
+        task_Table = Task_Table::find(taskID);
+
+        ttsbegin;
+
+        if (!headerID)
+        {
+            NumberSeq numSeq = NumberSeq::newGetNum(NumberSeqModule_Tasks::numRefTaskHeader());
+            headerID = numSeq.num();
+            task_Header.HeaderID = headerID;
+        }
+
+        task_Header.initValue();
+        task_Header.taskID = taskID;
+        task_Header.CustAccount = CustAccount;
+        task_Header.DateRequested = DateRequested;
+        task_Header.Status = Status;
+        task_Header.InitFromTaskTable(task_Table);
+        task_Header.insert();
+
+        info(strFmt("Header number %1 created for task %2", task_Header.HeaderID, task_Header.taskID));
+
+        ttscommit;
+
+        return headerID;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

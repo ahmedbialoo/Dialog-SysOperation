@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>Task_CreateHeaderContract</Name>
+	<SourceCode>
+		<Methods />
+		<UnparsableSource><![CDATA[
+[DataContractAttribute]
+public class p   extends SysOperationDataContractBase implements SysOperationValidatable
+{
+    //Timezone clientTimeZone = DateTimeUtil::getClientMachineTimeZone();
+    //TransDate today = DateTimeUtil::getSystemDate(clientTimeZone);
+
+    // contract parameters
+    Task_ID     Task_ID;
+    TransDate   DateRequested;
+    Task_Status Status;
+    CustAccount CustAccount;
+
+
+    [
+        DataMemberAttribute("Task_ID"),
+        SysOperationLabelAttribute(literalStr("Task ID")),
+        SysOperationDisplayOrderAttribute('1')
+    ]
+    public Task_ID parmTaskID(Task_ID _taskID = Task_ID)
+    {
+        Task_ID = _taskID;
+        return Task_ID;
+    }
+
+    [
+        DataMemberAttribute("DateRequested"),
+        SysOperationLabelAttribute(literalStr("Date Requested")),
+        SysOperationDisplayOrderAttribute('2')
+    ]
+    public TransDate parmDateRequested(TransDate _dateRequested = DateRequested)
+    {
+        DateRequested = _dateRequested;
+        return DateRequested;
+    }
+
+    [
+        DataMemberAttribute("Status"),
+        SysOperationLabelAttribute(literalStr("Status")),
+        SysOperationDisplayOrderAttribute('3')
+    ]
+    public Task_Status parmStatus(Task_Status _status = Status)
+    {
+        Status = _status;
+        return Status;
+    }
+
+    [
+        DataMemberAttribute("CustAccount"),
+        SysOperationLabelAttribute(literalStr("Customer Account")),
+        SysOperationDisplayOrderAttribute('2')
+    ]
+    public CustAccount parmCustAccount(CustAccount _custAccount = CustAccount)
+    {
+        CustAccount = _custAccount;
+        return CustAccount;
+    }
+
+    public boolean validate()
+    {
+        if (Task_ID == '')
+        {
+            //Vehicle Id must be specified
+            return checkFailed("Task id must be specified");
+        }
+        if (!Task_Table::Exist(Task_ID))
+        {
+            //Vehicle %1 does not exist
+            return checkFailed(strFmt("Task %1 does not exist", Task_ID));
+        }
+        if (DateRequested == dateNull())
+        {
+            //Vehicle group is required
+            return checkFailed("Date Requeste required");
+        }
+        if (DateRequested < today())
+        {
+            
+            // The acquisition date must be today or later
+            return checkFailed("Requested Date must be greater than today.");
+        }
+
+        return true;
+    }
+
+}
+]]></UnparsableSource>
+	</SourceCode>
+</AxClass>

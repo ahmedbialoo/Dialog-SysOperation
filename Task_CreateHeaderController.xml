@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>Task_CreateHeaderController</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+public class Task_CreateHeaderController extends SysOperationServiceController
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>main</Name>
+				<Source><![CDATA[
+    public static void main(Args _args)
+    {
+
+        Task_CreateHeaderController controller = new Task_CreateHeaderController();
+        controller.parmClassName(classStr(Task_CreateHeaderService));
+        controller.parmMethodName(methodStr(Task_CreateHeaderService, createHeader));
+        controller.parmExecutionMode(SysOperationExecutionMode::Synchronous);
+        controller.parmDialogCaption("Create New Header");
+        controller.startoperation();
+
+  
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>
